@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Api/" />
+  <Folder Name="/Client/">
+    <Project Path="sprintFlow/sprintFlow.csproj" Id="ed521a8f-1ca0-4742-b636-1143c4b9bf69" />
+  </Folder>
+  <Folder Name="/Shared/" />
+</Solution>
