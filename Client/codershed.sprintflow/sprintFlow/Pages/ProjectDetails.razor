@@ -1,0 +1,58 @@
+﻿@page "/project/{Id:int}"
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    string activeTab = "Tasks";
+    string activeTabStyle = "text-success fw-bold";
+
+    private string GetActiveTabClasses(string selectedTab)
+    {
+        return $"nav-link {(activeTab == selectedTab ? activeTabStyle : "text-secondary")}";
+
+    }
+}
+
+<h3>Project Details</h3>
+
+<span class="d-flex bg-body-secondary rounded-2 p-3">
+    First project for the team.
+</span>
+
+<ul class="nav nav-tabs mt-3">
+    <li class="nav-item">
+        <button class='@GetActiveTabClasses("Tasks")' aria-current="page" @onclick='() => activeTab = "Tasks"' Match="NavLinkMatch.All">
+            Tasks
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class='@GetActiveTabClasses("Documents")' @onclick='() => activeTab = "Documents"' Match="NavLinkMatch.All">
+            Documents
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class='@GetActiveTabClasses("Activities")' @onclick='() => activeTab = "Activities"' Match="NavLinkMatch.All">
+            Activities
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content mt-3">
+@if (activeTab == "Tasks")
+    {
+        <p>Tasks for this project</p>
+    }
+    else if (activeTab == "Documents")
+    {
+        <p>Documents for this project</p>
+    }
+    else if (activeTab == "Activities")
+    {
+        <p>Activities for this project</p>
+    }
+</div>
+
+
+
