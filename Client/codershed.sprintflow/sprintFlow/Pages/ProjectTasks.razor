@@ -1,0 +1,201 @@
+﻿@page "/tasks/{ProjectId:int}";
+
+<p>All project tasks</p>
+
+<nav class="navbar bg-body-secondary rounded-2">
+    <div class="container-fluid justify-content-end">
+        <form class="d-flex ar" role="search">
+            <a href="NewTask/@ProjectId" class="btn btn-outline-success">+ New Task</a>
+        </form>
+    </div>
+</nav>
+ <!--Offcanvas Task details start-->
+<div class="offcanvas offcanvas-end shadow-lg" tabindex="-1" id="taskDetailPanel" aria-labelledby="taskPanelLabel" style="width: 400px;">
+    <div class="offcanvas-header bg-success text-white">
+        <h class="offcanvas-title" id="taskPanelLabel">
+            <i class="bi bi-clipboard2-data me-2"></i> Task #@selectedTaskNumber
+        </h>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <h5>Create project structure.</h5>
+        <hr />
+        <div class="mb-3">
+            <label class="fw-bold">Description</label>
+            <p class="text-muted">Detailed task instructions would go here...</p>
+        </div>
+        <div class="dropdown">
+            <label class="fw-bold">Status</label>
+            <span class="fw-bold text-primary dropdown-toggle"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  style="cursor: pointer;">
+                @selectedTaskStatus
+            </span>
+
+            <ul class="dropdown-menu">
+                <li><button class="dropdown-item" @onclick='() => UpdateTaskStatus("New")'>New</button></li>
+                <li><button class="dropdown-item" @onclick='() => UpdateTaskStatus("Planned")'>Planned</button></li>
+                <li><button class="dropdown-item" @onclick='() => UpdateTaskStatus("In Progress")'>In Progress</button></li>
+                <li><button class="dropdown-item" @onclick='() => UpdateTaskStatus("In Review")'>In Review</button></li>
+                <li><button class="dropdown-item" @onclick='() => UpdateTaskStatus("Completed")'>Completed</button></li>
+                <li><button class="dropdown-item" @onclick='() => UpdateTaskStatus("On Hold")'>On Hold</button></li>
+                <li><button class="dropdown-item" @onclick='() => UpdateTaskStatus("Cancelled")'>Cancelled</button></li>
+            </ul>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Owner:</b> Nesia Mienie</li>
+            <li class="list-group-item"><b>Assignee:</b> Gerrit Coetzee</li>
+            <li class="list-group-item"><b>Created Date:</b> 10 February 2026</li>
+            <li class="list-group-item"><b>Due Date:</b> 10 March 2026</li>
+        </ul>
+
+        <div class="mt-4">
+            <button class="btn btn-outline-success w-100">Save Changes</button>
+        </div>
+    </div>
+</div>
+<!--Offcanvas Task details end-->
+
+<!--Task Cards Start (these cards will be created in a loop)-->
+<div class="card mt-3" style="max-width: 25rem;">
+    <div class="card-header bg-success text-light">
+        <div class="d-flex justify-content-between align-items-center">
+            <span>
+                <i class="bi bi-clipboard2-data fs-5 me-2"></i>
+                <span class="fw-bold">#00001</span>
+            </span>
+            <span class="badge rounded-pill bg-body-secondary text-dark">
+                In Progress
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Create project structure.</h5>
+        <p class="mb-1"><b>Owner</b>: Nesia Mienie</p>
+        <p class="mb-1"><b>Assignee</b>: Gerrit Coetzee</p>
+        <p class="mb-1"><b>Date Crated</b>: 10 February 2026</p>
+        <p class="mb-1"><b>Due Date</b>: 10 March 2026</p>
+       
+        <div class="d-flex justify-content-end mt-3">
+            <button class="btn btn-outline-success"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#taskDetailPanel">
+                open task
+            </button>
+        </div>
+    </div>
+</div>
+<div class="card mt-3" style="max-width: 25rem;">
+    <div class="card-header bg-success text-light">
+        <div class="d-flex justify-content-between align-items-center">
+            <span>
+                <i class="bi bi-clipboard2-data fs-5 me-2"></i>
+                <span class="fw-bold">#00002</span>
+            </span>
+            <span class="badge rounded-pill bg-body-secondary text-dark">
+                Planning
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Create project structure.</h5>
+        <p class="mb-1"><b>Owner</b>: Nesia Mienie</p>
+        <p class="mb-1"><b>Assignee</b>: Gerrit Coetzee</p>
+        <p class="mb-1"><b>Date Crated</b>: 10 February 2026</p>
+        <p class="mb-1"><b>Due Date</b>: 10 March 2026</p>
+
+        <div class="d-flex justify-content-end mt-3">
+            <a href="Project/1" class="btn btn-outline-success">open task</a>
+        </div>
+    </div>
+</div>
+<div class="card mt-3" style="max-width: 25rem;">
+    <div class="card-header bg-success text-light">
+        <div class="d-flex justify-content-between align-items-center">
+            <span>
+                <i class="bi bi-clipboard2-data fs-5 me-2"></i>
+                <span class="fw-bold">#00003</span>
+            </span>
+            <span class="badge rounded-pill bg-body-secondary text-dark">
+                Review
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Create project structure.</h5>
+        <p class="mb-1"><b>Owner</b>: Nesia Mienie</p>
+        <p class="mb-1"><b>Assignee</b>: Gerrit Coetzee</p>
+        <p class="mb-1"><b>Date Crated</b>: 10 February 2026</p>
+        <p class="mb-1"><b>Due Date</b>: 10 March 2026</p>
+
+        <div class="d-flex justify-content-end mt-3">
+            <a href="Project/1" class="btn btn-outline-success">open task</a>
+        </div>
+    </div>
+</div>
+<div class="card mt-3" style="max-width: 25rem;">
+    <div class="card-header bg-success text-light">
+        <div class="d-flex justify-content-between align-items-center">
+            <span>
+                <i class="bi bi-clipboard2-data fs-5 me-2"></i>
+                <span class="fw-bold">#00004</span>
+            </span>
+            <span class="badge rounded-pill bg-body-secondary text-dark">
+                New
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Create project structure.</h5>
+        <p class="mb-1"><b>Owner</b>: Nesia Mienie</p>
+        <p class="mb-1"><b>Assignee</b>: Gerrit Coetzee</p>
+        <p class="mb-1"><b>Date Crated</b>: 10 February 2026</p>
+        <p class="mb-1"><b>Due Date</b>: 10 March 2026</p>
+
+        <div class="d-flex justify-content-end mt-3">
+            <a href="Project/1" class="btn btn-outline-success">open task</a>
+        </div>
+    </div>
+</div>
+<div class="card mt-3" style="max-width: 25rem;">
+    <div class="card-header bg-success text-light">
+        <div class="d-flex justify-content-between align-items-center">
+            <span>
+                <i class="bi bi-clipboard2-data fs-5 me-2"></i>
+                <span class="fw-bold">#00005</span>
+            </span>
+            <span class="badge rounded-pill bg-body-secondary text-dark">
+                New
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Create project structure.</h5>
+        <p class="mb-1"><b>Owner</b>: Nesia Mienie</p>
+        <p class="mb-1"><b>Assignee</b>: Gerrit Coetzee</p>
+        <p class="mb-1"><b>Date Crated</b>: 10 February 2026</p>
+        <p class="mb-1"><b>Due Date</b>: 10 March 2026</p>
+
+        <div class="d-flex justify-content-end mt-3">
+            <a href="Project/1" class="btn btn-outline-success">open task</a>
+        </div>
+    </div>
+</div>
+<!--Task Cards End-->
+
+@code {
+    [Parameter]
+    public int ProjectId { get; set; }
+
+    private int selectedTaskNumber { get; set; }
+    private String selectedTaskStatus { get; set; } = "New";
+
+    private void UpdateTaskStatus(string newStatus)
+    {
+        selectedTaskStatus = newStatus;
+    }
+    //continue by completing the task details by doing the code to ste the status.
+}
