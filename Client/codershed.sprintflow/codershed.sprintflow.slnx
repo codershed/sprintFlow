@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/Api/" />
+  <Folder Name="/Api/">
+    <Project Path="../../Api/sprintFlow_Api/sprintFlow_Api.csproj" Id="60a9d703-5b40-48c4-bdd5-da4624de2eb0" />
+  </Folder>
   <Folder Name="/Client/">
     <Project Path="sprintFlow/sprintFlow.csproj" Id="ed521a8f-1ca0-4742-b636-1143c4b9bf69" />
   </Folder>
