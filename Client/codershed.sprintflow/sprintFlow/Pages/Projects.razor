@@ -1,15 +1,28 @@
-﻿@page "/"
+﻿@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthStateProvider
+@attribute [Authorize(Policy = "CanManageProjects")]
+
+@page "/"
 @page "/projects"
 
 <h3>Projects</h3>
 
-<nav class="navbar bg-body-secondary rounded-2">
-    <div class="container-fluid justify-content-end">
-        <form class="d-flex ar" role="search">
-            <a href="NewProject" class="btn btn-outline-success">+ New Project</a>
-        </form>
-    </div>
-</nav>
+<AuthorizeView>
+    <Authorized>
+        <nav class="navbar bg-body-secondary rounded-2">
+            <div class="container-fluid justify-content-end">
+                <form class="d-flex ar" role="search">
+                    <a href="NewProject" class="btn btn-outline-success">+ New Project</a>
+                </form>
+            </div>
+        </nav>
+    </Authorized>
+    <NotAuthorized>
+        <p>You are not authorized to create projects.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 <div class="row mt-3">
     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -81,5 +94,14 @@
 </div>
 
 @code {
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
 
+        foreach (var claim in user.Claims)
+        {
+            Console.WriteLine($"Type: {claim.Type}, Value: {claim.Value}");
+        }
+    }
 }

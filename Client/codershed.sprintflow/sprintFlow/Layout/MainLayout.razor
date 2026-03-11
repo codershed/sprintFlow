@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
 <div class="d-flex flex-column vh-100">
     <!-- TOP NAVBAR -->
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
@@ -9,17 +13,25 @@
         <a class="navbar-brand d-none d-md-inline me-0 px-3 fs-6 text-white" href="#">sprint-Flow</a>
         
         <!-- Profile Icon Button (No Image) -->
-        <div class="dropdown me-3">
-            <button class="btn btn-dark dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
-                <i class="bi bi-person-circle fs-5 me-2"></i>
-                <span>Account</span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end shadow">
-                <li><a class="dropdown-item" href="profile">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><button class="dropdown-item text-danger">Logout</button></li>
-            </ul>
-        </div>
+        
+        <AuthorizeView>
+            <Authorized>
+                <div class="dropdown me-3">
+                    <button class="btn btn-dark dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle fs-5 me-2"></i>
+                        <span>@context.User.Identity?.Name</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <li>
+                            <button class="dropdown-item text-danger" @onclick="BeginSignOut">Log out</button>
+                        </li>
+                    </ul>
+                </div>
+            </Authorized>
+            <NotAuthorized>         
+                <p>Unauthorized</p>
+            </NotAuthorized>
+        </AuthorizeView>
     </header>
 
     <div class="d-flex flex-grow-1 overflow-hidden">
@@ -73,4 +85,14 @@
             </div>
         </main>
     </div>
+
+
 </div>
+
+@code{
+    private async Task BeginSignOut()
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}

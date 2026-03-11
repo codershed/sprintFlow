@@ -1,14 +1,27 @@
-﻿@page "/tasks/{ProjectId:int}";
+﻿@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthStateProvider
+
+@attribute [Authorize(Policy = "CanManageTasks")]
+@page "/tasks/{ProjectId:int}";
 
 <p>All project tasks</p>
 
-<nav class="navbar bg-body-secondary rounded-2">
-    <div class="container-fluid justify-content-end">
-        <form class="d-flex ar" role="search">
-            <a href="NewTask/@ProjectId" class="btn btn-outline-success">+ New Task</a>
-        </form>
-    </div>
-</nav>
+<AuthorizeView>
+    <Authorized>
+        <nav class="navbar bg-body-secondary rounded-2">
+            <div class="container-fluid justify-content-end">
+                <form class="d-flex ar" role="search">
+                    <a href="NewTask/@ProjectId" class="btn btn-outline-success">+ New Task</a>
+                </form>
+            </div>
+        </nav>
+    </Authorized>
+    <NotAuthorized>
+        <p>You are not authorized to create tasks.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
  <!--Offcanvas Task details start-->
 <div class="offcanvas offcanvas-end shadow-lg" tabindex="-1" id="taskDetailPanel" aria-labelledby="taskPanelLabel" style="width: 400px;">
     <div class="offcanvas-header bg-success text-white">
@@ -51,9 +64,17 @@
             <li class="list-group-item"><b>Due Date:</b> 10 March 2026</li>
         </ul>
 
-        <div class="mt-4">
-            <button class="btn btn-outline-success w-100">Save Changes</button>
-        </div>
+        <AuthorizeView>
+            <Authorized>
+                <div class="mt-4">
+                    <button class="btn btn-outline-success w-100">Save Changes</button>
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                <p>You are not authorized to save changes to this task.</p>
+            </NotAuthorized>
+        </AuthorizeView>
+       
     </div>
 </div>
 <!--Offcanvas Task details end-->

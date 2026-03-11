@@ -1,0 +1,33 @@
+﻿@page "/authentication/{action}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [AllowAnonymous]
+
+<RemoteAuthenticatorView Action="@Action">
+    <LogInFailed>
+        <div class="alert alert-danger">
+            <h4>Login Failed</h4>
+            <p>There was an error logging in. Please try again.</p>
+            <a href="/" class="btn btn-primary">Return Home</a>
+        </div>
+    </LogInFailed>
+    <LogOutFailed>
+        <div class="alert alert-danger">
+            <h4>Logout Failed</h4>
+            <p>There was an error logging out.</p>
+            <a href="/" class="btn btn-primary">Return Home</a>
+        </div>
+    </LogOutFailed>
+    <LogOutSucceeded>
+        <div class="alert alert-success">
+            <h4>Logout Successful</h4>
+            <p>You have been successfully logged out.</p>
+            <a href="/" class="btn btn-primary">Return Home</a>
+        </div>
+    </LogOutSucceeded>
+    
+</RemoteAuthenticatorView>
+
+@code {
+    [Parameter] public string? Action { get; set; }
+}
