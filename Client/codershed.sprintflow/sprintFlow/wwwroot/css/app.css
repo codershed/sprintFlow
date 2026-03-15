@@ -87,3 +87,10 @@ code {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+/*.dropdown-menu li.dropend:hover > .dropdown-menu {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -100%;*/ /* Positions it to the right of the main menu */
+    /*margin-top: -1px;
+}*/

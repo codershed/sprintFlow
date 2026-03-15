@@ -1,8 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Security.Claims
 @inherits LayoutComponentBase
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 @inject IHttpClientFactory HttpClientFactory
+@inject AuthenticationStateProvider authenticationStateProvider
 
 <div class="d-flex flex-column vh-100">
     <!-- TOP NAVBAR -->
@@ -18,14 +20,32 @@
         <AuthorizeView>
             <Authorized>
                 <div class="dropdown me-3">
-                    <button class="btn btn-dark dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+                    <button class="btn btn-dark dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                         <i class="bi bi-person-circle fs-5 me-2"></i>
                         <span>@context.User.Identity?.Name</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <!-- Submenu Toggle -->
                         <li>
-                            <button class="dropdown-item text-danger" @onclick="BeginSignOut">Log out</button>
+                            <button class="dropdown-item d-flex justify-content-between align-items-center"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#roleSubmenu">
+                                Assigned Roles <i class="bi bi-chevron-down small"></i>
+                            </button>
+
+                            <!-- The "Submenu" List -->
+                            <div class="collapse" id="roleSubmenu" @onclick:stopPropagation="true">
+                                <ul class="list-unstyled ps-3 bg-light border-top border-bottom">
+                                    @foreach (var role in GetRoles(context))
+                                    {
+                                        <li><span class="dropdown-item py-1 small text-muted">@role</span></li>
+                                    }
+                                </ul>
+                            </div>
                         </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><button class="dropdown-item text-danger" @onclick="BeginSignOut">Log out</button></li>
                     </ul>
                 </div>
             </Authorized>
@@ -91,6 +111,25 @@
 </div>
 
 @code{
+
+    private List<string> GetRoles(AuthenticationState context)
+    {
+        List<string> userRoles = new();
+        var claims = context.User.Claims.Select(c => c).ToList();
+        
+        @foreach (var claim in claims)
+        {
+            Console.WriteLine($"{claim.ValueType} - {claim.Value}");
+        
+            if(claim.Type == ClaimTypes.Role || claim.Type == "roles")
+            {
+                userRoles.Add(claim.Value);
+            }
+        }
+        Console.WriteLine($"Total Roles Found: {userRoles.Count}");
+        return userRoles;
+    }  
+    
     private async Task BeginSignOut()
     {
         await SignOutManager.SetSignOutState();
