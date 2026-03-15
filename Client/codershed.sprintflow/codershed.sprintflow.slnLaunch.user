@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "..\\..\\Api\\sprintFlow_Api\\sprintFlow_Api.csproj",
+        "Action": "Start",
+        "DebugTarget": "sprintFlow_Api"
+      },
+      {
+        "Path": "sprintFlow\\sprintFlow.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
+      }
+    ]
+  }
+]
