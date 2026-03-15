@@ -5,6 +5,7 @@ using sprintFlow;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
@@ -21,7 +22,7 @@ builder.Services.AddMsalAuthentication(options =>
     options.UserOptions.RoleClaim = "roles";
     options.UserOptions.ScopeClaim = "scp";
 
-    // Request the API scope so MSAL returns an access token for your API
+    // Request the API scope so MSAL returns an access token for the API
     options.ProviderOptions.DefaultAccessTokenScopes.Add("api://2b3be717-1fb7-46a0-b298-bc47bdc9ef56/api.access");
 
 }).AddAccountClaimsPrincipalFactory<CustomUserFactory>();
@@ -34,10 +35,10 @@ builder.Services.AddAuthorizationCore(options =>
         policy.RequireRole("Application.Administrator", "Project.Manager", "Task.Manager"));
 });
 
+//this is linking the FE client to the API and ensuring the access token is included in the request
 builder.Services.AddHttpClient("api", client =>
     client.BaseAddress = new Uri("http://localhost:7088"))
-    .
-AddHttpMessageHandler(sp =>
+.AddHttpMessageHandler(sp =>
 {
     return sp.GetRequiredService<AuthorizationMessageHandler>()
         .ConfigureHandler(
