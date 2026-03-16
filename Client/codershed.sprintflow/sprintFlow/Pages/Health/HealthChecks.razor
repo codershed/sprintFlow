@@ -1,0 +1,57 @@
+﻿@inject IHttpClientFactory HttpClientFactory
+@using System.Net
+
+<div class="d-flex align-items-center">
+    
+    <span class="nav-link d-flex align-items-center">
+        <a href="#javascript:0" @onclick="CheckApiHealth" class="link-dark text-decoration-none d-flex align-items-center ms-2">
+            @if (checkingApiHealth)
+            {
+                <span>Api - </span><span class="spinner-border spinner-border-sm ms-2" role="status"></span>
+            }
+            else if (IsApiHealthy == true)
+            {
+                <span>Api - </span>
+                <i class="bi bi-check-circle-fill text-success ms-2"></i> <!-- Green Check -->
+            }
+            else
+            {
+                <span>Api - </span>
+                <i class="bi bi-x-circle-fill text-danger ms-2"></i> <!-- Red Cross -->
+            }
+        </a>
+    </span>
+</div>
+
+@code {
+    private bool IsApiHealthy { get; set; } = false;
+    private bool checkingApiHealth { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckApiHealth();
+    }
+
+    private async Task CheckApiHealth()
+    {
+        try
+        {
+            checkingApiHealth = true;
+            StateHasChanged();
+
+            var httpClient = HttpClientFactory.CreateClient("api");
+            var response = await httpClient.GetAsync("api/isonline");
+            IsApiHealthy = response.IsSuccessStatusCode;
+
+        }
+        catch
+        {
+            IsApiHealthy = false;
+        }
+        finally
+        {
+            checkingApiHealth = false;
+            StateHasChanged();
+        }
+    }
+}

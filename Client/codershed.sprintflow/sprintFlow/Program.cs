@@ -35,14 +35,13 @@ builder.Services.AddAuthorizationCore(options =>
         policy.RequireRole("Application.Administrator", "Project.Manager", "Task.Manager"));
 });
 
-//this is linking the FE client to the API and ensuring the access token is included in the request
 builder.Services.AddHttpClient("api", client =>
-    client.BaseAddress = new Uri("http://localhost:7088"))
+    client.BaseAddress = new Uri("http://127.0.0.1:7088"))
 .AddHttpMessageHandler(sp =>
 {
     return sp.GetRequiredService<AuthorizationMessageHandler>()
         .ConfigureHandler(
-            authorizedUrls: new[] { "http://localhost:7088" },
+            authorizedUrls: new[] { "http://127.0.0.1:7088" },
             scopes: new[] { "api://2b3be717-1fb7-46a0-b298-bc47bdc9ef56/api.access" });
 });
 

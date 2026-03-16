@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Security.Claims
+@using sprintFlow.Pages.Health
 @inherits LayoutComponentBase
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
@@ -31,7 +32,7 @@
                                     type="button"
                                     data-bs-toggle="collapse"
                                     data-bs-target="#roleSubmenu">
-                                Assigned Roles <i class="bi bi-chevron-down small"></i>
+                                <i class="bi bi-chevron-down small"></i>Assigned Roles
                             </button>
 
                             <!-- The "Submenu" List -->
@@ -39,11 +40,31 @@
                                 <ul class="list-unstyled ps-3 bg-light border-top border-bottom">
                                     @foreach (var role in GetRoles(context))
                                     {
-                                        <li><span class="dropdown-item py-1 small text-muted">@role</span></li>
+                                        <li><span class='dropdown-item py-1 small text-muted'>@role</span></li>
                                     }
                                 </ul>
                             </div>
                         </li>
+                        <li>
+                            <button class="dropdown-item d-flex justify-content-between align-items-center"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#healthSubmenu">
+                                <i class="bi bi-chevron-down small"></i>Health Checks
+                            </button>
+
+                            <!-- The "Submenu" List -->
+                            <div class="collapse" id="healthSubmenu" @onclick:stopPropagation="true">
+                                <ul class="list-unstyled ps-3 bg-light border-top border-bottom">
+                                    <li>
+                                        <div class="nav-item px-3 mt-3">
+                                            <HealthChecks />
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        
                         <li><hr class="dropdown-divider"></li>
                         <li><button class="dropdown-item text-danger" @onclick="BeginSignOut">Log out</button></li>
                     </ul>
@@ -111,7 +132,7 @@
 </div>
 
 @code{
-
+   
     private List<string> GetRoles(AuthenticationState context)
     {
         List<string> userRoles = new();
@@ -119,14 +140,11 @@
         
         @foreach (var claim in claims)
         {
-            Console.WriteLine($"{claim.ValueType} - {claim.Value}");
-        
             if(claim.Type == ClaimTypes.Role || claim.Type == "roles")
             {
                 userRoles.Add(claim.Value);
             }
         }
-        Console.WriteLine($"Total Roles Found: {userRoles.Count}");
         return userRoles;
     }  
     
